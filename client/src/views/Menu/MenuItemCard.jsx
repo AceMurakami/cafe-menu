@@ -1,40 +1,53 @@
-import React from 'react'
-import useLocalCart from '../../hooks/useLocalCart'
+MenuItemCard.jsx
+import React from 'react';
+import useLocalCart from '../../hooks/useLocalCart';
 
 function MenuItemCard({ item }) {
-  const { addToCart } = useLocalCart()
+  const { addToCart } = useLocalCart();
+
+  const handleAdd = () => {
+    const payload = {
+      id: item._id || item.id, // ensure consistent ID
+      name: item.name,
+      description: item.description,
+      price: item.price,
+      image: item.image,
+      category: item.category,
+    };
+    addToCart(payload);
+  };
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:scale-[1.01] transform transition w-full">
-      <div className="w-full h-[160px] bg-white flex items-end justify-center overflow-hidden pt-4">
+    <div className="bg-white/70 rounded-lg shadow-md p-3 font-sans w-full text-center mb-4">
+      {item.image && (
         <img
           src={item.image}
           alt={item.name}
-          className="max-h-full object-contain"
+          className="w-full h-20 object-cover rounded mb-2"
         />
-      </div>
+      )}
 
-      <div className="p-4">
-        <h2 className="text-lg font-bold text-[#4E342E]">{item.name}</h2>
-        <p className="text-sm text-[#607D8B] mt-1">{item.description}</p>
+      <h2 className="text-sm font-bold text-[#3E2C23] font-playfair mb-1">
+        {item.name}
+      </h2>
 
-        <div className="mt-4 flex items-center justify-between">
-          <span className="font-bold text-base text-[#4E342E]">
-            ${item.price.toFixed(2)}
-          </span>
-          <button
-            className="bg-[#A5D6A7] text-[#4E342E] px-4 py-1 rounded-full shadow hover:bg-[#B2D89D] transition text-sm"
-            onClick={() => {
-              console.log('Add clicked for:', item.name)
-              addToCart(item)
-            }}
-          >
-            Add 🧺
-          </button>
-        </div>
+      <p className="text-xs text-[#5C5A57] leading-snug mb-2">
+        {item.description}
+      </p>
+
+      <div className="flex items-center justify-between mt-1">
+        <span className="text-sm text-[#3E2C23] font-medium">
+          ${item.price.toFixed(2)}
+        </span>
+        <button
+          className="bg-[#D9C3A1] hover:bg-[#CBB291] text-[#3E2C23] italic underline font-cinzel text-xs px-3 py-1 rounded-full shadow transition"
+          onClick={handleAdd}
+        >
+          Add 🧺
+        </button>
       </div>
     </div>
-  )
+  );
 }
 
-export default MenuItemCard
+export default MenuItemCard;

@@ -1,47 +1,94 @@
-import { useState, useEffect } from 'react'
+// useLocalCart.js
+// import { useState, useEffect } from 'react'
 
-const CART_KEY = 'kissa-cart'
+// const CART_KEY = 'kissa-cart'
+
+// function useLocalCart() {
+//   const [cart, setCart] = useState(() => {
+//     const saved = localStorage.getItem(CART_KEY)
+//     return saved ? JSON.parse(saved) : []
+//   })
+
+//   useEffect(() => {
+//     localStorage.setItem(CART_KEY, JSON.stringify(cart))
+//   }, [cart])
+
+//   const addToCart = (item) => {
+//     const itemId = item.id || item._id
+
+//     setCart((prevCart) => {
+//       const existing = prevCart.find((i) => (i.id || i._id) === itemId)
+//       if (existing) {
+//         return prevCart.map((i) =>
+//           (i.id || i._id) === itemId ? { ...i, quantity: i.quantity + 1 } : i
+//         )
+//       }
+//       return [...prevCart, { ...item, quantity: 1, id: itemId }]
+//     })
+//   }
+
+//   const removeFromCart = (id) => {
+//     setCart((prev) => prev.filter((i) => (i.id || i._id) !== id))
+//   }
+
+//   const clearCart = () => setCart([])
+
+//   return {
+//     cart,
+//     addToCart,
+//     removeFromCart,
+//     clearCart,
+//   }
+// }
+
+// export default useLocalCart
+
+import { useState, useEffect } from 'react';
+
+const CART_KEY = 'kissa-cart';
 
 function useLocalCart() {
   const [cart, setCart] = useState(() => {
-    const saved = localStorage.getItem(CART_KEY)
-    return saved ? JSON.parse(saved) : []
-  })
+    const saved = localStorage.getItem(CART_KEY);
+    return saved ? JSON.parse(saved) : [];
+  });
 
   useEffect(() => {
-    console.log('Cart updated → syncing to localStorage:', cart)
-    localStorage.setItem(CART_KEY, JSON.stringify(cart))
-  }, [cart])
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  }, [cart]);
 
   const addToCart = (item) => {
-    console.log('ADDING TO CART:', item)
+    const itemId = item.id || item._id;
 
-    setCart((prev) => {
-      const exists = prev.find((i) => i.id === item.id)
-      if (exists) {
-        console.log('Item exists, increasing quantity.')
-        return prev.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
-        )
+    setCart(() => {
+      const current = localStorage.getItem(CART_KEY);
+      const prevCart = current ? JSON.parse(current) : [];
+
+      const existing = prevCart.find((i) => (i.id || i._id) === itemId);
+      if (existing) {
+        return prevCart.map((i) =>
+          (i.id || i._id) === itemId
+            ? { ...i, quantity: i.quantity + 1 }
+            : i
+        );
       }
 
-      console.log('New item, adding with quantity 1.')
-      return [...prev, { ...item, quantity: 1 }]
-    })
-  }
+      return [...prevCart, { ...item, quantity: 1, id: itemId }];
+    });
+  };
 
   const removeFromCart = (id) => {
-    setCart((prev) => prev.filter((i) => i.id !== id))
-  }
+    setCart((prev) => prev.filter((i) => (i.id || i._id) !== id));
+  };
 
-  const clearCart = () => setCart([])
+  const clearCart = () => setCart([]);
 
   return {
     cart,
     addToCart,
     removeFromCart,
     clearCart,
-  }
+  };
 }
 
-export default useLocalCart
+export default useLocalCart;

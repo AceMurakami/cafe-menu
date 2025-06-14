@@ -1,188 +1,74 @@
-// import React, { useState } from 'react'
-// import MenuItemCard from './MenuItemCard'
-
-// function Menu() {
-//   const [menuItems] = useState([
-//     {
-//       id: 1,
-//       name: 'Matcha Latte',
-//       category: 'drink',
-//       description: 'Smooth, creamy matcha with steamed milk.',
-//       price: 4.5,
-//       image: '/images/matcha-latte.png',
-//     },
-//     {
-//       id: 2,
-//       name: 'Iced Americano',
-//       category: 'drink',
-//       description: 'Chilled espresso over ice.',
-//       price: 3.0,
-//       image: '/images/iced-americano.png',
-//     },
-//     {
-//       id: 3,
-//       name: 'Avocado Toast',
-//       category: 'food',
-//       description: 'Toasted sourdough with smashed avocado & chili flakes.',
-//       price: 5.5,
-//       image: '/images/avocado-toast.png',
-//     },
-//     {
-//       id: 4,
-//       name: 'Fluffy Matcha Pancakes',
-//       category: 'food',
-//       description: 'Thick, airy matcha pancakes topped with freshcberries and maple syrup.',
-//       price: 6.5,
-//       image: '/images/matcha-pancakes.png',
-//     }
-//   ])
-
-//   const [filter, setFilter] = useState('food')
-
-//   const filteredItems =
-//     filter === 'all' ? menuItems : menuItems.filter(item => item.category === filter)
-
-//   return (
-//     <div className="bg-[#FDEDED] min-h-screen px-4 py-6 font-[Poppins]">
-//       <div className="max-w-md mx-auto">
-//         <h1 className="text-3xl font-bold text-[#4E342E] text-center mb-6">
-//           Explore Our Menu 🍵
-//         </h1>
-
-//         <section className="pb-6">
-//           <div className="flex justify-center gap-4">
-//             <button
-//               className={`px-4 py-1 rounded-full font-semibold shadow transition ${
-//                 filter === 'food'
-//                   ? 'bg-[#F8BBD0] text-[#4E342E]'
-//                   : 'bg-gray-200 text-gray-600'
-//               }`}
-//               onClick={() => setFilter('food')}
-//             >
-//               Food
-//             </button>
-//             <button
-//               className={`px-4 py-1 rounded-full font-semibold shadow transition ${
-//                 filter === 'drink'
-//                   ? 'bg-[#F8BBD0] text-[#4E342E]'
-//                   : 'bg-gray-200 text-gray-600'
-//               }`}
-//               onClick={() => setFilter('drink')}
-//             >
-//               Drinks
-//             </button>
-//           </div>
-//         </section>
-
-//         <section className="pt-6">
-//           <div className="grid grid-cols-1 gap-6">
-//             {filteredItems.map(item => (
-//               <MenuItemCard key={item.id} item={item} />
-//             ))}
-//           </div>
-//         </section>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default Menu     
-
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import MenuItemCard from './MenuItemCard'
+Menu.jsx
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import MenuItemCard from './MenuItemCard';
 
 function Menu() {
-  const [menuItems] = useState([
-    {
-      id: 1,
-      name: 'Matcha Latte',
-      category: 'drink',
-      description: 'Smooth, creamy matcha with steamed milk.',
-      price: 4.5,
-      image: '/images/matcha-latte.png',
-    },
-    {
-      id: 2,
-      name: 'Iced Americano',
-      category: 'drink',
-      description: 'Chilled espresso over ice.',
-      price: 3.0,
-      image: '/images/iced-americano.png',
-    },
-    {
-      id: 3,
-      name: 'Avocado Toast',
-      category: 'food',
-      description: 'Toasted sourdough with smashed avocado & chili flakes.',
-      price: 5.5,
-      image: '/images/avocado-toast.png',
-    },
-    {
-      id: 4,
-      name: 'Fluffy Matcha Pancakes',
-      category: 'food',
-      description: 'Thick, airy matcha pancakes topped with freshcberries and maple syrup.',
-      price: 6.5,
-      image: '/images/matcha-pancakes.png',
-    }
-  ])
+  const [menuItems, setMenuItems] = useState([]);
 
-  const [filter, setFilter] = useState('food')
+  useEffect(() => {
+    fetch('http://localhost:3001/api/menu')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('✅ Menu fetched:', data);
+        setMenuItems(data);
+      })
+      .catch((err) => {
+        console.error('❌ Failed to fetch menu:', err);
+      });
+  }, []);
 
-  const filteredItems =
-    filter === 'all' ? menuItems : menuItems.filter(item => item.category === filter)
+  const drinks = menuItems.filter(item => item.category === 'drink');
+  const food = menuItems.filter(item => item.category === 'food');
 
   return (
-    <div className="relative bg-[#FDEDED] min-h-screen px-4 py-6 font-[Poppins]">
-      <div className="max-w-md mx-auto">
-        <h1 className="text-3xl font-bold text-[#4E342E] text-center mb-6">
-          Explore Our Menu 🍵
-        </h1>
-
-        <section className="pb-6">
-          <div className="flex justify-center gap-4">
-            <button
-              className={`px-4 py-1 rounded-full font-semibold shadow transition ${
-                filter === 'food'
-                  ? 'bg-[#F8BBD0] text-[#4E342E]'
-                  : 'bg-gray-200 text-gray-600'
-              }`}
-              onClick={() => setFilter('food')}
+    <div className="bg-white min-h-screen w-full font-sans px-4 py-6">
+      <div className="max-w-lg mx-auto w-full relative">
+        <div className="pt-5 mb-4">
+          <h1 className="text-3xl font-playfair italic text-[#3E2C23] text-center leading-snug mb-2">
+            Explore Our Menu 🍵
+          </h1>
+          <div className="text-right mb-6">
+            <Link
+              to="/cart"
+              className="bg-[#D9C3A1] hover:bg-[#CBB291] text-[#3E2C23] italic underline font-cinzel px-5 py-2 rounded-full shadow-md text-sm font-medium transition-all inline-block"
             >
-              Food
-            </button>
-            <button
-              className={`px-4 py-1 rounded-full font-semibold shadow transition ${
-                filter === 'drink'
-                  ? 'bg-[#F8BBD0] text-[#4E342E]'
-                  : 'bg-gray-200 text-gray-600'
-              }`}
-              onClick={() => setFilter('drink')}
-            >
-              Drinks
-            </button>
+              🧺 View Cart
+            </Link>
           </div>
-        </section>
+        </div>
 
-        <section className="pt-6">
-          <div className="grid grid-cols-1 gap-6">
-            {filteredItems.map(item => (
-              <MenuItemCard key={item.id} item={item} />
-            ))}
-          </div>
-        </section>
+        {/* Drinks Section */}
+        {drinks.length > 0 && (
+          <>
+            <h2 className="text-lg text-[#3E2C23] font-cinzel font-semibold mb-2 border-b border-[#E5E3DD] pb-1">
+              🥤 Drinks
+            </h2>
+            <div className="mb-8">
+              {drinks.map((item) => (
+                <MenuItemCard key={item._id} item={item} />
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Food Section */}
+        {food.length > 0 && (
+          <>
+            <h2 className="text-lg text-[#3E2C23] font-cinzel font-semibold mb-2 border-b border-[#E5E3DD] pb-1">
+              🍽️ Food
+            </h2>
+            <div className="mb-8">
+              {food.map((item) => (
+                <MenuItemCard key={item._id} item={item} />
+              ))}
+            </div>
+          </>
+        )}
       </div>
-
-      {/* Floating Cart Button */}
-      <Link
-        to="/cart"
-        className="fixed bottom-5 right-5 bg-[#C5E1A5] hover:bg-[#AED581] text-[#4E342E] px-4 py-2 rounded-full shadow-lg text-sm font-semibold transition z-50"
-      >
-        🧺 Cart
-      </Link>
     </div>
-  )
+  );
 }
 
-export default Menu
+export default Menu;
+

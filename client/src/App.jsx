@@ -1,29 +1,10 @@
-// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import Home from './views/Home/Home';
-// import Menu from './views/Menu/Menu';
-// import Cart from './views/Cart/Cart';
-
-// // import PostDetails from './views/PostDetails';
-
-// function App() {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/" element={<Home />} />
-//         <Route path="/menu" element={<Menu />} />
-//         <Route path="/cart" element={<Cart />} />
-//       </Routes>
-//     </Router>
-//   );
-// }
-
-// export default App;
-
+App.jsx
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import Home from './views/Home/Home';
 import Menu from './views/Menu/Menu';
 import Cart from './views/Cart/Cart';
+import Table from './views/Table/Table';
 
 // Admin pages
 import AdminLogin from './views/Admin/AdminLogin';
@@ -46,7 +27,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/cart" element={<Cart />} />
-
+        <Route path="/table/:tableId" element={<Table />} />
         {/* Admin routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route

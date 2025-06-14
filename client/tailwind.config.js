@@ -5,7 +5,13 @@ export default {
     "./src/**/*.{js,jsx,ts,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        cinzel: ['Cinzel', 'serif'],
+        playfair: ['"Playfair Display"', 'serif'],
+        sans: ['Poppins', 'sans-serif'], // for body text
+      },
+    }
   },
   plugins: [],
 }
